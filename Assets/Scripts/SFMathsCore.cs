@@ -293,4 +293,14 @@ public static class SFMathsCore
         return new MyVector3(v.x * s.x, v.y * s.y, v.z * s.z);
     }
 
+    public static MyVector3 DirectionFromBasis(MyVector3 localDir, MyVector3 R, MyVector3 U, MyVector3 F)
+    {
+        return Scale(R, localDir.x) + Scale(U, localDir.y) + Scale(F, localDir.y);
+    }
+
+    public static MyVector3 LocalPointToWorldPoint(MyVector3 P, MyVector3 localPoint, MyVector3 R, MyVector3 U, MyVector3 F)
+    {
+        return P + DirectionFromBasis(localPoint, R, U, F);
+    }
+
 }

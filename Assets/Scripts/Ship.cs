@@ -79,7 +79,7 @@ public class Ship : MonoBehaviour
 
         Vector3 convertedVector = SFMathsCore.MyVector3ToVector3(movementChange);
 
-        transform.position = convertedVector;
+        transform.position += convertedVector;
 
         transform.rotation = Quaternion.Euler(pitchDeg, yawDeg, 0f);
 
