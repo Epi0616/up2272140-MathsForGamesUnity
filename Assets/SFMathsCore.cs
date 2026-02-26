@@ -288,4 +288,9 @@ public static class SFMathsCore
         return new MyVector3(Cx, Cy, Cz);
     }
 
+    public static MyVector3 NonUniformScale(MyVector3 v, MyVector3 s)
+    {
+        return new MyVector3(v.x * s.x, v.y * s.y, v.z * s.z);
+    }
+
 }
