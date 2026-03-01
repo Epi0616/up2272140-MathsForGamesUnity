@@ -62,7 +62,7 @@ public class BulletSpawner : MonoBehaviour
 
         // TODO (C): Use the correct Part A function to convert localForward into a world direction and normalise it.
 
-        MyVector3 fireDir = 
+       // MyVector3 fireDir = 
 
 
         // 5) Spawn bullet (rotation is optional for movement)

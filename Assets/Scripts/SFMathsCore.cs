@@ -57,7 +57,7 @@ public class MyVector3
         MyVector3 result = new MyVector3(0f, 0f, 0f);
         result.x = a.x - b.x;
         result.y = a.y - b.y;
-        result.z = a.z + b.y;
+        result.z = a.z - b.y;
         return result;
     }
 
@@ -79,7 +79,20 @@ public class MyVector3
     }
 
 }
+/*
+public class Matrix4by4
+{
+    public Matrix4by4(MyVector3 column1, MyVector3 column2, MyVector3 column3, MyVector3 column4)
+    {
+        float values = new float[4, 4];
 
+        values[0, 0] = column1.x;
+        values[1, 0] = column1.y;
+        values[2, 0] = column1.z;
+        values[3, 0] = 0f;
+    }
+}
+*/
 
 
 public static class SFMathsCore
@@ -301,6 +314,22 @@ public static class SFMathsCore
     public static MyVector3 LocalPointToWorldPoint(MyVector3 P, MyVector3 localPoint, MyVector3 R, MyVector3 U, MyVector3 F)
     {
         return P + DirectionFromBasis(localPoint, R, U, F);
+    }
+
+    public static MyVector3 VecLerp(MyVector3 a, MyVector3 b, float t)
+    {
+        return a + Scale((b - a), t); 
+    }
+
+    public static float FLerp(float a, float b, float t)
+    {
+        return a + (b - a) * t;
+    }
+
+    public static MyVector3 NonUniformScaleLocalToWorld(MyVector3 P, MyVector3 localP, MyVector3 scaleV, MyVector3 R, MyVector3 U, MyVector3 F)
+    {
+        MyVector3 scaled = NonUniformScale(localP, scaleV);
+        return P + Scale(R, scaled.x) + Scale(U, scaled.y) + Scale (F, scaled.z);
     }
 
 }
