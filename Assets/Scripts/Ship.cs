@@ -13,6 +13,7 @@ public class Ship : MonoBehaviour
 
     public float pitchClamp = 80f; // degrees
 
+    private MyVector3 Up = MyVector3.up;
 
     // Input values set by PlayerInput (Send Messages)
 
@@ -71,7 +72,9 @@ public class Ship : MonoBehaviour
 
         MyVector3 forwardVector = SFMathsCore.ForwardFromYawPitch(yawRad, pitchRad);
 
-        MyVector3 rightVector = SFMathsCore.CrossProduct(MyVector3.up(), forwardVector);
+        MyVector3 rightVector = SFMathsCore.CrossProduct(Up, forwardVector);
+
+        //Up = SFMathsCore.CrossProduct(rightVector, forwardVector);
 
         MyVector3 movementDirection = SFMathsCore.Scale(forwardVector, moveInput.y) + SFMathsCore.Scale(rightVector, moveInput.x);
 
