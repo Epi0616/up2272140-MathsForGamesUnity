@@ -61,16 +61,17 @@ public class Ship : MonoBehaviour
 
         yawDeg += lookInput.x * lookSensitivity;
 
-        pitchDeg -= lookInput.y * lookSensitivity;
+        pitchDeg += lookInput.y * lookSensitivity;
 
         pitchDeg = Mathf.Clamp(pitchDeg, -pitchClamp, pitchClamp);
 
         //Now we’ll use our MFGCore library for movement before our last line is:
+        transform.rotation = Quaternion.Euler(pitchDeg, yawDeg, 0f);
 
         float yawRad = SFMathsCore.DegreesToRadians(yawDeg);
         float pitchRad = SFMathsCore.DegreesToRadians(pitchDeg);
 
-        MyVector3 forwardVector = SFMathsCore.ForwardFromYawPitch(yawRad, pitchRad);
+        MyVector3 forwardVector = SFMathsCore.ForwardFromYawPitchUnity(yawRad, pitchRad);
 
         MyVector3 rightVector = SFMathsCore.CrossProduct(Up, forwardVector);
 
@@ -84,7 +85,7 @@ public class Ship : MonoBehaviour
 
         transform.position += convertedVector;
 
-        transform.rotation = Quaternion.Euler(pitchDeg, yawDeg, 0f);
+        
 
     }
 

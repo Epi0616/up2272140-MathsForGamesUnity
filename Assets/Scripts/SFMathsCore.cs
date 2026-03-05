@@ -405,7 +405,15 @@ public static class SFMathsCore
         float Fz = Mathf.Cos(yawRadians) * Mathf.Cos(pitchRadians);
         return new MyVector3(Fx, Fy, Fz);
     }
-    
+
+    public static MyVector3 ForwardFromYawPitchUnity(float yawRadians, float pitchRadians)
+    {
+        float Fx = Mathf.Sin(yawRadians) * Mathf.Cos(pitchRadians);
+        float Fy = -Mathf.Sin(pitchRadians);
+        float Fz = Mathf.Cos(yawRadians) * Mathf.Cos(pitchRadians);
+        return new MyVector3(Fx, Fy, Fz);
+    }
+
     public static MyVector3 CrossProduct(MyVector3 a, MyVector3 b)
     {
         float Cx = a.y * b.z - a.z * b.y;
