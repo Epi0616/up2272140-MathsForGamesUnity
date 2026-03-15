@@ -30,10 +30,10 @@ public class testing : MonoBehaviour
         //MyVector3 lerpResult = SFMathsCore.NonUniformScaleLocalToWorld(new MyVector3(10f, 2f, -4f), new MyVector3(1.5f, 2f, -0.5f), new MyVector3(2f, 0.5f, 3f), new MyVector3(0.8f, 0f, -0.6f), new MyVector3(0f, 1f, 0f), new MyVector3(0.6f, 0f, 0.8f));
         //Debug.Log("x: " + lerpResult.x + ", y: " + lerpResult.y + " z: " + lerpResult.z);
         //Debug.Log(v);
-        // MyVector3 R = SFMathsCore.Normalize(SFMathsCore.CrossProduct(MyVector3.up(), b));
-        //Debug.Log("x: " + R.x + ", y: " + R.y + " z: " + R.z);
-        // MyVector3 Up = SFMathsCore.CrossProduct(b, R);
-        //Debug.Log("x: " + Up.x + ", y: " + Up.y + " z: " + Up.z);
+         MyVector3 R = SFMathsCore.Normalize(SFMathsCore.CrossProduct(MyVector3.up, b));
+         Debug.Log("Right is x: " + R.x + ", y: " + R.y + " z: " + R.z);
+         MyVector3 Up = SFMathsCore.CrossProduct(b, R);
+         Debug.Log("Up is x: " + Up.x + ", y: " + Up.y + " z: " + Up.z);
         //MyVector4 lerpResult = M * V;
         MyVector3 lerpResult = MyVector3.up;
         Debug.Log("x: " + lerpResult.x + ", y: " + lerpResult.y + " z: " + lerpResult.z);
