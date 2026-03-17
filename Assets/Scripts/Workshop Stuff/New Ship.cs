@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Ship : MonoBehaviour
+public class NewShip : MonoBehaviour
 
 {
 
@@ -65,7 +65,7 @@ public class Ship : MonoBehaviour
 
         pitchDeg = Mathf.Clamp(pitchDeg, -pitchClamp, pitchClamp);
 
-        //Now we’ll use our MFGCore library for movement before our last line is:
+        //Now weï¿½ll use our MFGCore library for movement before our last line is:
         transform.rotation = Quaternion.Euler(pitchDeg, yawDeg, 0f);
 
         float yawRad = SFMathsCore.DegreesToRadians(yawDeg);

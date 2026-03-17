@@ -12,7 +12,7 @@ public class BulletSpawner : MonoBehaviour
     public MyVector3 muzzleLocalOffset = new MyVector3(0f, 0f, 1.2f);
 
 
-    private bool firePressedThisFrame;
+   // private bool firePressedThisFrame;
 
 
     // If you have PlayerInput (Send Messages) with a "Fire" action (you should after W3)
@@ -23,7 +23,7 @@ public class BulletSpawner : MonoBehaviour
         if (value.isPressed)
         {
             Debug.Log("Fired");
-            firePressedThisFrame = true;
+            //firePressedThisFrame = true;
         }
     }
 

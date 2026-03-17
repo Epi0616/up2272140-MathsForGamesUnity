@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-
+[System.Serializable]
 public class MyVector2
 {
     public float x;
@@ -31,7 +31,7 @@ public class MyVector2
     }
 
 }
-
+[System.Serializable]
 public class MyVector3
 {
     public float x;
@@ -70,6 +70,23 @@ public class MyVector3
         return result;
     }
 
+    public static MyVector3 operator *(MyVector3 v, float s)
+    {
+        return new MyVector3(v.x * s, v.y * s, v.z * s);
+    }
+
+    public static MyVector3 operator *(MyVector3 v, MyVector3 s)
+    {
+        return new MyVector3(v.x * s.x, v.y * s.y, v.z * s.z);
+    }
+
+    public static MyVector3 operator /(MyVector3 v, float s)
+    {
+        if (s == 0) { return new MyVector3(0f, 0f, 0f); }
+
+        return new MyVector3(v.x / s, v.y / s, v.z / s);
+    }
+
     public static MyVector3 zero
     {
         get
@@ -101,7 +118,7 @@ public class MyVector3
    
 
 }
-
+[System.Serializable]
 public class MyVector4
 {
     public float x;
@@ -145,70 +162,52 @@ public class MyVector4
         return result;
     }
 }
-
+[System.Serializable]
 public class Matrix4by4
-{
-    public float[,] values;
+{ 
 
-    public Matrix4by4(MyVector3 column1, MyVector3 column2, MyVector3 column3, MyVector3 column4)
-    {
-        values = new float[4, 4];
-
-        values[0, 0] = column1.x;
-        values[1, 0] = column1.y;
-        values[2, 0] = column1.z;
-        values[3, 0] = 0f;
-
-        values[0, 1] = column2.x;
-        values[1, 1] = column2.y;
-        values[2, 1] = column2.z;
-        values[3, 1] = 0f;
-
-        values[0, 2] = column3.x;
-        values[1, 2] = column3.y;
-        values[2, 2] = column3.z;
-        values[3, 2] = 0f;
-
-        values[0, 3] = column4.x;
-        values[1, 3] = column4.y;
-        values[2, 3] = column4.z;
-        values[3, 3] = 1f;
-    }
+    public MyVector4 row0;
+    public MyVector4 row1; 
+    public MyVector4 row2;
+    public MyVector4 row3;
 
     public Matrix4by4(MyVector4 column1, MyVector4 column2, MyVector4 column3, MyVector4 column4)
     {
-        values = new float[4, 4];
-
-        values[0, 0] = column1.x;
-        values[1, 0] = column1.y;
-        values[2, 0] = column1.z;
-        values[3, 0] = column1.w;
-
-        values[0, 1] = column2.x;
-        values[1, 1] = column2.y;
-        values[2, 1] = column2.z;
-        values[3, 1] = column2.w;
-
-        values[0, 2] = column3.x;
-        values[1, 2] = column3.y;
-        values[2, 2] = column3.z;
-        values[3, 2] = column3.w;
-
-        values[0, 3] = column4.x;
-        values[1, 3] = column4.y;
-        values[2, 3] = column4.z;
-        values[3, 3] = column4.w;
+        row0 = new MyVector4(column1.x, column2.x, column3.x, column4.x);
+        row1 = new MyVector4(column1.y, column2.y, column3.y, column4.y);
+        row2 = new MyVector4(column1.z, column2.z, column3.z, column4.z);
+        row3 = new MyVector4(column1.w, column2.w, column3.w, column4.w);
     }
 
-   
+    public Matrix4by4(MyVector3 R, MyVector3 U, MyVector3 F, MyVector3 P)
+    {
+        row0 = new MyVector4(R.x, U.x, F.x, P.x);
+        row1 = new MyVector4(R.y, U.y, F.y, P.y);
+        row2 = new MyVector4(R.z, U.z, F.z, P.z);
+        row3 = new MyVector4(0f, 0f, 0f, 1f);
+    }
 
     public static MyVector4 operator *(Matrix4by4 M, MyVector4 v)
     {
+        return M.Multiply(v);
+
+        /*
         float x = M.values[0, 0] * v.x + M.values[0, 1] * v.y + M.values[0, 2] * v.z + M.values[0, 3] * v.w;
         float y = M.values[1, 0] * v.x + M.values[1, 1] * v.y + M.values[1, 2] * v.z + M.values[1, 3] * v.w;
         float z = M.values[2, 0] * v.x + M.values[2, 1] * v.y + M.values[2, 2] * v.z + M.values[2, 3] * v.w;
         float w = M.values[3, 0] * v.x + M.values[3, 1] * v.y + M.values[3, 2] * v.z + M.values[3, 3] * v.w;
         return new MyVector4 (x, y, z, w);
+        */
+    }
+
+    public MyVector4 Multiply(MyVector4 v)
+    {
+        float x = SFMathsCore.DotProduct(row0, v);
+        float y = SFMathsCore.DotProduct(row1, v);
+        float z = SFMathsCore.DotProduct(row2, v);
+        float w = SFMathsCore.DotProduct(row3, v);
+
+        return new MyVector4(x, y, z, w);
     }
 
     public static Matrix4by4 Identity
@@ -229,33 +228,6 @@ public class Matrix4by4
 
 public static class SFMathsCore
 {
-    public static Vector2 AddVector(Vector2 a, Vector2 b)
-    {
-        return new Vector2(a.x + b.x, a.y + b.y);
-    }
-
-    public static MyVector2 AddVector(MyVector2 a, MyVector2 b)
-    {
-        return new MyVector2(a.x + b.x, a.y + b.y);
-    }
-    public static MyVector3 AddVector(MyVector3 a, MyVector3 b)
-    {
-        return new MyVector3(a.x + b.x, a.y + b.y, a.z + b.z);
-    }
-
-    public static Vector2 SubtractVector(Vector2 a, Vector2 b)
-    {
-        return new Vector2(a.x - b.x, a.y - b.y);
-    }
-    public static MyVector2 SubtractVector(MyVector2 a, MyVector2 b)
-    {
-        return new MyVector2(a.x - b.x, a.y - b.y);
-    }
-    public static MyVector3 SubtractVector(MyVector3 a, MyVector3 b)
-    {
-        return new MyVector3(a.x - b.x, a.y - b.y, a.z + b.z);
-    }
-
     public static float Length(Vector2 v)
     {
         return Mathf.Sqrt(v.x * v.x + v.y * v.y);
@@ -335,6 +307,10 @@ public static class SFMathsCore
     {
         return a.x * b.x + a.y * b.y;
     }
+    public static float DotProduct(MyVector4 a, MyVector4 b)
+    {
+        return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+    }
     public static float DotProduct(Vector2 a, Vector2 b)
     {
         return a.x * b.x + a.y * b.y;
@@ -360,6 +336,22 @@ public static class SFMathsCore
     public static MyVector3 ApplyGravity(MyVector3 v, MyVector3 gravity)
     {
         return v + Scale(gravity, Time.deltaTime);
+    }
+
+    public static MyVector3 CalculateGravityFor2Objects(PhysicsObject obj1, PhysicsObject obj2, float G)
+    {
+        
+        MyVector3 distanceVector = obj1.CustomTransformComponent.Position - obj2.CustomTransformComponent.Position;
+        float distanceValue = Length(distanceVector);
+        MyVector3 distanceNormalised = Normalize(distanceVector);
+        if (distanceValue == 0)
+        {
+            Debug.LogError("Distance is Zero");
+            return MyVector3.zero;
+        }
+        float force = (G * obj1.mass * obj2.mass) / Mathf.Pow(distanceValue, 2);
+        return (distanceNormalised * -force);
+        
     }
 
     public static Vector2 MyVectorToVector(MyVector2 v)
@@ -432,6 +424,14 @@ public static class SFMathsCore
         return Scale(R, localDir.x) + Scale(U, localDir.y) + Scale(F, localDir.y);
     }
 
+    public static void BuildBasisFromForward(MyVector3 forward, out MyVector3 R, out MyVector3 U, out MyVector3 F)
+    {
+        F = Normalize(forward);
+        U = MyVector3.up;
+        R = Normalize(CrossProduct(U, F));
+        U = CrossProduct(F, R);
+    }
+
     public static MyVector3 LocalPointToWorldPoint(MyVector3 P, MyVector3 localPoint, MyVector3 R, MyVector3 U, MyVector3 F)
     {
         return P + DirectionFromBasis(localPoint, R, U, F);
@@ -452,6 +452,26 @@ public static class SFMathsCore
         return P + Scale(R, scaled.x) + Scale(U, scaled.y) + Scale (F, scaled.z);
     }
 
+    public static MyVector3 TransformPoint(Matrix4by4 M, MyVector3 P)
+    {
+        MyVector4 v = new MyVector4(P.x, P.y, P.z, 1f);
+        MyVector4 result = M.Multiply(v);
+        return new MyVector3(result.x, result.y, result.z);
+    }
 
+    public static MyVector3 TransformDirection(Matrix4by4 M, MyVector3 D)
+    {
+        MyVector4 v = new MyVector4(D.x, D.y, D.z, 0f);
+        MyVector4 result = M.Multiply(v);
+        return new MyVector3(result.x, result.y, result.z);
+    }
 
+    public static Matrix4by4 BuildTRS(MyVector3 P, MyVector3 R, MyVector3 U, MyVector3 F, MyVector3 scale)
+    {
+        MyVector3 Rs = R * scale.x;
+        MyVector3 Us = U * scale.y;
+        MyVector3 Fs = F * scale.z;
+
+        return new Matrix4by4(Rs, Us, Fs, P);
+    }
 }
