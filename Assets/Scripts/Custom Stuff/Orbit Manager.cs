@@ -10,13 +10,19 @@ public class OrbitManager : MonoBehaviour
     private const float GravitationalConstant = 1f;
     private void FixedUpdate()
     {
-        foreach (PhysicsObject physicsObject in objects)
+        foreach (PhysicsObject physicsObject1 in objects)
         {
-            physicsObject.acceleration = SFMathsCore.CalculateGravityFor2Objects(physicsObject,PrimaryStar, GravitationalConstant);
+            foreach (PhysicsObject physicsObject2 in objects)
+            {
+                //physicsObject.acceleration += SFMathsCore.CalculateGravityFor2Objects(physicsObject1,PrimaryStar, GravitationalConstant);
+                if (physicsObject1 == physicsObject2) { continue; }
+                physicsObject1.acceleration += SFMathsCore.CalculateGravityFor2Objects(physicsObject1,physicsObject2, GravitationalConstant);
+            }
             
-            physicsObject.currentVelocity += physicsObject.acceleration * Time.fixedDeltaTime;
             
-            physicsObject.CustomTransformComponent.Position += physicsObject.currentVelocity/physicsObject.mass * Time.fixedDeltaTime;
+            physicsObject1.currentVelocity += physicsObject1.acceleration * Time.fixedDeltaTime;
+            
+            physicsObject1.CustomTransformComponent.Position += physicsObject1.currentVelocity/physicsObject1.mass * Time.fixedDeltaTime;
         }
         
         //Debug.Log(transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
