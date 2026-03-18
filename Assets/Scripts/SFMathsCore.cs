@@ -347,7 +347,7 @@ public static class SFMathsCore
         MyVector3 distanceNormalised = Normalize(distanceVector);
         if (distanceValue == 0)
         {
-            Debug.LogError("Distance is Zero");
+            //Debug.LogError("Distance is Zero");
             return MyVector3.zero;
         }
         float force = (G * obj1.mass * obj2.mass) / Mathf.Pow(distanceValue, 2);

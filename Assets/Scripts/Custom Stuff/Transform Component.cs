@@ -26,6 +26,6 @@ public class MyTransformComponent : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(position.x + ", " + position.y + ", " + position.z);
+        //Debug.Log(position.x + ", " + position.y + ", " + position.z);
     }
 }
