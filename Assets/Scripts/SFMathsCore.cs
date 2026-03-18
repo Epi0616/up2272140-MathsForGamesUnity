@@ -343,6 +343,7 @@ public static class SFMathsCore
         
         MyVector3 distanceVector = obj1.CustomTransformComponent.Position - obj2.CustomTransformComponent.Position;
         float distanceValue = Length(distanceVector);
+        distanceValue = Mathf.Clamp(distanceValue, 11f, 10000f);
         MyVector3 distanceNormalised = Normalize(distanceVector);
         if (distanceValue == 0)
         {

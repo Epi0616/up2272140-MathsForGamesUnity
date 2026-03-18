@@ -12,12 +12,19 @@ public class OrbitManager : MonoBehaviour
     {
         foreach (PhysicsObject physicsObject in objects)
         {
-            physicsObject.acceleration = SFMathsCore.CalculateGravityFor2Objects(physicsObject,PrimaryStar, GravitationalConstant);
+            foreach (PhysicsObject physicsObject2 in objects)
+            {
+                if (physicsObject == physicsObject2) { continue; }
+                physicsObject.acceleration += SFMathsCore.CalculateGravityFor2Objects(physicsObject,physicsObject2, GravitationalConstant);
+            }
+            physicsObject.acceleration += SFMathsCore.CalculateGravityFor2Objects(physicsObject,PrimaryStar, GravitationalConstant);
             
             physicsObject.currentVelocity += physicsObject.acceleration * Time.fixedDeltaTime;
             
             physicsObject.CustomTransformComponent.Position += physicsObject.currentVelocity/physicsObject.mass * Time.fixedDeltaTime;
         }
+        
+        
         
         //Debug.Log(transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
         //objects[1]. acceleration = SFMathsCore.CalculateGravityFor2Objects(objects[1], PrimaryStar, GravitationalConstant);

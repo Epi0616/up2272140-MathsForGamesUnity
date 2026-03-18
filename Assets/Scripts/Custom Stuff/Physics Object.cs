@@ -29,6 +29,7 @@ public class PhysicsObject : MonoBehaviour
         {
             transform.position = SFMathsCore.MyVector3ToVector3(customTransformComponent.Position);
             transform.localScale = SFMathsCore.MyVector3ToVector3(customTransformComponent.Scale);
+            acceleration = MyVector3.zero;
         }
         else
         {
