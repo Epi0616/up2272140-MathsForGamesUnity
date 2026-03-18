@@ -640,7 +640,6 @@ MonoBehaviour:
   - {fileID: 1070118580}
   - {fileID: 1957282797}
   - {fileID: 1826082630}
-  - {fileID: 1822998775}
   PrimaryStar: {fileID: 1822998775}
 --- !u!4 &422110571
 Transform:
@@ -888,7 +887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhysicsObject
   currentVelocity:
-    x: 50
+    x: 12
     y: 0
     z: 0
   acceleration:
@@ -911,7 +910,7 @@ MonoBehaviour:
   position:
     x: 0
     y: 0
-    z: -39.6
+    z: -20
   rotation:
     x: 0
     y: 0
@@ -1205,7 +1204,7 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
-  mass: 1000
+  mass: 5000
 --- !u!114 &1822998776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1365,7 +1364,7 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
-  mass: 4
+  mass: 50
 --- !u!23 &1826082631
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1470,7 +1469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyTransformComponent
   position:
-    x: 60.8
+    x: 40
     y: 0
     z: 0
   rotation:
@@ -1496,7 +1495,7 @@ MonoBehaviour:
   currentVelocity:
     x: 0
     y: 0
-    z: 42.6
+    z: 15
   acceleration:
     x: 0
     y: 0
