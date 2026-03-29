@@ -74,6 +74,10 @@ public class MyVector3
     {
         return new MyVector3(v.x * s, v.y * s, v.z * s);
     }
+    public static MyVector3 operator *(float s, MyVector3 v)
+    {
+        return new MyVector3(v.x * s, v.y * s, v.z * s);
+    }
 
     public static MyVector3 operator *(MyVector3 v, MyVector3 s)
     {
@@ -85,6 +89,11 @@ public class MyVector3
         if (s == 0) { return new MyVector3(0f, 0f, 0f); }
 
         return new MyVector3(v.x / s, v.y / s, v.z / s);
+    }
+
+    public MyVector3 Negate()
+    {     
+        return new MyVector3(-x, -y, -z);
     }
 
     public static MyVector3 zero
@@ -223,8 +232,65 @@ public class Matrix4by4
         }
     }
 }
+[System.Serializable]
+public class MyQuaternion
+{
+    public float w;
+    public float x;
+    public float y;
+    public float z;
+    public MyVector3 v;
 
+    public MyQuaternion(float angle, MyVector3 axis)
+    {
+       // axis = SFMathsCore.Normalize(axis);
+        float halfAngle = angle / 2;
+        w = Mathf.Cos(halfAngle);
+        x = axis.x * Mathf.Sin(halfAngle);
+        y = axis.y * Mathf.Sin(halfAngle);
+        z = axis.z * Mathf.Sin(halfAngle);
+        SetAxis(new MyVector3(x, y, z));
+    }
 
+    public MyQuaternion(MyVector3 axis)
+    {
+        //axis = SFMathsCore.Normalize(axis);
+        w = 0f;
+        SetAxis(new MyVector3(axis.x, axis.y, axis.z));
+    }
+
+    public MyQuaternion()
+    {
+        w = 0f;
+        SetAxis(MyVector3.zero);
+    }
+
+    public static MyQuaternion operator * (MyQuaternion R, MyQuaternion S)
+    {
+        MyQuaternion result = new MyQuaternion(S.w * R.w - SFMathsCore.DotProduct(R.v, S.v), S.w * R.v + R.w * S.v + SFMathsCore.CrossProduct(R.v, S.v));
+        return result;
+    }
+
+    public MyQuaternion Inverse()
+    {
+        MyQuaternion result = new MyQuaternion();
+        result.w = w;
+        result.SetAxis(GetAxis().Negate());
+        return result;
+    }
+
+    public void SetAxis(MyVector3 newAxis)
+    {
+        v = newAxis;
+        x = newAxis.x;
+        y = newAxis.y;
+        z = newAxis.z;
+    }
+    public MyVector3 GetAxis()
+    {
+        return v;
+    }
+}
 
 public static class SFMathsCore
 {
@@ -306,6 +372,10 @@ public static class SFMathsCore
     public static float DotProduct(MyVector2 a, MyVector2 b)
     {
         return a.x * b.x + a.y * b.y;
+    }
+    public static float DotProduct(MyVector3 a, MyVector3 b)
+    {
+        return a.x * b.x + a.y * b.y + a.z * b.z;
     }
     public static float DotProduct(MyVector4 a, MyVector4 b)
     {
@@ -474,5 +544,12 @@ public static class SFMathsCore
         MyVector3 Fs = F * scale.z;
 
         return new Matrix4by4(Rs, Us, Fs, P);
+    }
+
+    public static MyVector3 RotateVertexAroundAxis(float Angle, MyVector3 Axis, MyVector3 Vertex)
+    {
+        MyVector3 V = (Vertex * Mathf.Cos(Angle)) + DotProduct(Vertex, Axis) * Axis * (1 - Mathf.Cos(Angle)) + CrossProduct(Axis, Vertex) * Mathf.Sin(Angle);
+
+        return V;
     }
 }

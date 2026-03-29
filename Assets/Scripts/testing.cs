@@ -30,23 +30,8 @@ public class testing : MonoBehaviour
     
     private void Update()
     {
-        //R = new MyVector3(0.6f, 0.0f, -0.8f);
-        //U = new MyVector3(0.0f, 0.1f, 0.0f);
-        //F = new MyVector3(0.8f, 0.0f, 0.6f);
-        /*
-        MyVector3 F = SFMathsCore.ForwardFromYawPitch(SFMathsCore.DegreesToRadians(30), SFMathsCore.DegreesToRadians(20));
-        MyVector3 R = SFMathsCore.Normalize(SFMathsCore.CrossProduct(MyVector3.up, F));
-        M = SFMathsCore.BuildTRS(A, R, MyVector3.up, F, B);
-        MyVector3 worldP = SFMathsCore.TransformPoint(M, C);
-        MyVector3 worldD = SFMathsCore.TransformDirection(M, C);
-        Debug.Log("Forward is: " + F.x + " , " + F.y + " , " + F.z);
-        Debug.Log("Right is: " + R.x + " , " + R.y + " , " + R.z);
-        Debug.Log("world Point is: " + worldP.x + " , " + worldP.y + " , " + worldP.z);
-        Debug.Log("world Direciton is: " + worldD.x + " , " + worldD.y + " , " + worldD.z);
-        */
-        M = new Matrix4by4(A, B, C, new MyVector3(6.0f, 0.0f, 0.0f));
-        MyVector4 V = M.Multiply(new MyVector4(2.0f, 1.0f, -4.0f, 1.0f));
-        Debug.Log(V.x);
+        MyQuaternion q = new MyQuaternion(SFMathsCore.DegreesToRadians(60f), new MyVector3(0.2673f, 0.5345f, 0.8018f));
+        Debug.Log(q.w + " Vector: " + q.x + " , " + q.y + " , " + q.z);
     }
 
     private float easeOutQuad(float x)
