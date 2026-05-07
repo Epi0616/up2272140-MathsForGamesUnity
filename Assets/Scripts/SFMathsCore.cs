@@ -292,6 +292,18 @@ public class MyQuaternion
     }
 }
 
+public class AABB
+{
+    public MyVector3 max;
+    public MyVector3 min;
+
+    public AABB(MyVector3 min, MyVector3 max)
+    {
+        this.min = min;
+        this.max = max;
+    }
+}
+
 public static class SFMathsCore
 {
     public static float Length(Vector2 v)
@@ -551,5 +563,38 @@ public static class SFMathsCore
         MyVector3 V = (Vertex * Mathf.Cos(Angle)) + DotProduct(Vertex, Axis) * Axis * (1 - Mathf.Cos(Angle)) + CrossProduct(Axis, Vertex) * Mathf.Sin(Angle);
 
         return V;
+    }
+
+    public static bool Intersects(AABB box1, AABB box2)
+    {
+        return !(box2.min.x > box1.max.x
+                 || box2.max.x < box1.min.x
+                 || box2.min.y > box1.max.y
+                 || box2.max.y < box1.min.y
+                 || box2.min.z > box1.max.z
+                 || box2.max.z < box1.min.z);
+    }
+
+    public static MyVector3 AccelerationFM(MyVector3 force, float mass)
+    {
+        return force / mass;
+    }
+
+    public static MyVector3 VelocityADt(MyVector3 currentV, MyVector3 acceleration, float dt)
+    {
+        return currentV + acceleration * dt;
+    }
+
+    public static MyVector3 UpdatePos(MyVector3 currentPos, MyVector3 velocity, float dt)
+    {
+        return currentPos + velocity * dt;
+    }
+
+    public static MyVector3 Reflect(MyVector3 velocity, MyVector3 normal)
+    {
+        MyVector3 norm = Normalize(normal);
+        float dot = DotProduct(velocity, norm);
+        MyVector3 result = norm * (2 * dot);
+        return velocity - result;
     }
 }
